@@ -1,0 +1,82 @@
+#include "shell.h"
+
+/**
+ * convertLongToString - Converts a number to a string.
+ * @number: The number to be converted to a string.
+ * @string: The buffer to save the number as a string.
+ * @base: The base for number conversion.
+ * 
+ * Return: Nothing.
+ */
+void convertLongToString(long num, char *result, int base)
+{
+    int idx = 0, isNegative = 0;
+    long q = num;
+    char digits[] = "0123456789abcdef";
+
+    if (q == 0)
+        result[idx++] = '0';
+
+    if (result[0] == '-')
+        isNegative = 1;
+
+    while (q)
+    {
+        if (q < 0)
+            result[idx++] = digits[-(q % base)];
+        else
+            result[idx++] = digits[q % base];
+        q /= base;
+    }
+    if (isNegative)
+        result[idx++] = '-';
+
+    result[idx] = '\0';
+    reverseString(result);
+}
+
+/**
+ * parseInt - Converts a string to an integer.
+ * @str: Pointer to the source string.
+ * Return: The integer value of the string or 0.
+ */
+int parseInt(char *str)
+{
+    int sign = 1;
+    unsigned int num = 0;
+
+    while (!('0' <= *str && *str <= '9') && *str != '\0')
+    {
+        if (*str == '-')
+            sign *= -1;
+        if (*str == '+')
+            sign *= +1;
+        str++;
+    }
+
+    while ('0' <= *str && *str <= '9' && *str != '\0')
+    {
+        num = (num * 10) + (*str - '0');
+        str++;
+    }
+    return (num * sign);
+}
+
+/**
+ * countCharacterOccurrences - Counts the occurrences of a character in a string.
+ * @str: Pointer to the source string.
+ * @charToCount: String containing characters to be counted.
+ * Return: The count of characters in the string.
+ */
+int countCharacterOccurrences(char *str, char *charToCount)
+{
+    int idx = 0, count = 0;
+
+    for (; str[idx]; idx++)
+    {
+        if (str[idx] == charToCount[0])
+            count++;
+    }
+    return count;
+}
+
