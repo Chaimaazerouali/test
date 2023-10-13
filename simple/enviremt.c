@@ -5,7 +5,7 @@
  * @data: Struct for the program's data.
  * Return: 0 if success, 1 if there are arguments.
  */
-int showEnvironment(data_of_program *data)
+int showEnvironment(CustomShellData *data)
 {
     int i;
 
@@ -26,7 +26,7 @@ int showEnvironment(data_of_program *data)
  * @data: Struct for the program's data.
  * Return: 0 if success, 1 if there are missing arguments, 2 if arguments are too big.
  */
-int setEnvironmentVariable(data_of_program *data)
+int setEnvironmentVariable(CustomShellData *data)
 {
     if (data->tokens[1] == NULL || data->tokens[2] == NULL || data->tokens[3] != NULL)
     {
@@ -35,7 +35,7 @@ int setEnvironmentVariable(data_of_program *data)
         return 1;
     }
 
-    int result = env_set_key(data->tokens[1], data->tokens[2], data);
+    int result = setEnvironmentVariable(data->tokens[1], data->tokens[2], data);
 
     if (result == 0)
         return 0;
@@ -48,7 +48,7 @@ int setEnvironmentVariable(data_of_program *data)
  * @data: Struct for the program's data.
  * Return: 0 if success, 1 if there are missing arguments.
  */
-int unsetEnvironmentVariable(data_of_program *data)
+int unsetEnvironmentVariable(CustomShellData *data)
 {
     if (data->tokens[1] == NULL || data->tokens[2] != NULL)
     {
@@ -57,7 +57,7 @@ int unsetEnvironmentVariable(data_of_program *data)
         return 1;
     }
 
-    env_remove_key(data->tokens[1], data);
+    removeEnvironmentVariable(data->tokens[1], data);
 
     return 0;
 }

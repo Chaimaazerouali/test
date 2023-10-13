@@ -6,7 +6,7 @@
  * Return: Returns the return value of the executed function if there is a match,
  * otherwise returns -1.
  **/
-int executeBuiltin(data_of_program *data)
+int executeBuiltin( CustomShellData *data)
 {
     int iterator;
     builtins builtinCommands[] = {
@@ -24,7 +24,7 @@ int executeBuiltin(data_of_program *data)
     for (iterator = 0; builtinCommands[iterator].builtin != NULL; iterator++)
     {
         /* Check for a match between the given command and a builtin */
-        if (str_compare(builtinCommands[iterator].builtin, data->command_name, 0))
+        if (strCompare(builtinCommands[iterator].builtin, data->command_name, 0))
         {
             /* Execute the function and return its return value */
             return (builtinCommands[iterator].function(data));

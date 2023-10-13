@@ -9,7 +9,7 @@
  */
 int shellMain(int argc, char *argv[], char *env[])
 {
-	data_of_program data_struct = {NULL}, *data = &data_struct;
+	 CustomShellData data_struct = {NULL}, *data = &data_struct;
 	char *shell_prompt = "";
 
 	initializeData(data, argc, argv, env);
@@ -32,8 +32,8 @@ int shellMain(int argc, char *argv[], char *env[])
  */
 void handleCtrlC(int signal UNUSED)
 {
-	_print("\n");
-	_print(PROMPT_MSG);
+	printToStdout("\n");
+	printToStdout(PROMPT_MSG);
 }
 
 /**
@@ -59,10 +59,10 @@ void initializeData(data_of_program *data, int argc, char *argv[], char **env)
 		data->file_descriptor = open(argv[1], O_RDONLY);
 		if (data->file_descriptor == -1)
 		{
-			_printe(data->program_name);
-			_printe(": 0: Can't open ");
-			_printe(argv[1]);
-			_printe("\n");
+			printToStderr(data->program_name);
+			printToStderr(": 0: Can't open ");
+			printToStderr(argv[1]);
+			printToStderr("\n");
 			exit(127);
 		}
 	}
@@ -89,32 +89,32 @@ void initializeData(data_of_program *data, int argc, char *argv[], char **env)
  * @prompt: The shell prompt string.
  * @data: Pointer to the data_of_program structure.
  */
-void runShell(char *prompt, data_of_program *data)
+void runShell(char *prompt,CustomShellData *data)
 {
 	int errorCode = 0, lineLength = 0;
 
 	while (++(data->exec_counter))
 	{
-		_print(prompt);
-		errorCode = lineLength = _getline(data);
+		printToStdout(prompt);
+		errorCode = lineLength =custom_getline(data);
 
 		if (errorCode == EOF)
 		{
-			freeAllData(data);
+			free_all_shell_data(data);
 			exit(errno);
 		}
 		if (lineLength >= 1)
 		{
 			expandAliases(data);
 			expandVariables(data);
-			tokenize(data);
+			customTokenizer(data);
 			if (data->tokens[0])
 			{
 				errorCode = execute(data);
 				if (errorCode != 0)
-					_printError(errorCode, data);
+					printErrorMessage(errorCode, data);
 			}
-			freeRecurrentData(data);
+			free_recurring_data(data);
 		}
 	}
 }

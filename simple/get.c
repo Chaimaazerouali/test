@@ -6,7 +6,7 @@
  *
  * Return: Number of bytes read.
  */
-int custom_getline(data_of_program *data)
+int custom_getline(CustomShellData *data)
 {
     char buff[BUFFER_SIZE] = {'\0'};
     static char *array_commands[10] = {NULL};
@@ -34,7 +34,7 @@ int custom_getline(data_of_program *data)
         /* Split lines by '\n' or ';' */
         i = 0;
         do {
-            array_commands[i] = str_duplicate(_strtok(i ? NULL : buff, "\n;"));
+            array_commands[i] = strDuplicate(_strtok(i ? NULL : buff, "\n;"));
             /* Check and split for '&&' and '||' operators */
             i = check_logic_ops(array_commands, i, array_operators);
         } while (array_commands[i++]);
@@ -48,7 +48,7 @@ int custom_getline(data_of_program *data)
         array_operators[i] = array_operators[i + 1];
     }
 
-    return (str_length(data->input_line));
+    return (strLength(data->input_line));
 }
 
 /**
@@ -72,8 +72,8 @@ int check_logic_ops(char *array_commands[], int i, char array_operators[])
             /* Split the line when '&&' is found */
             temp = array_commands[i];
             array_commands[i][j] = '\0';
-            array_commands[i] = str_duplicate(array_commands[i]);
-            array_commands[i + 1] = str_duplicate(temp + j + 2);
+            array_commands[i] = strDuplicate(array_commands[i]);
+            array_commands[i + 1] = strDuplicate(temp + j + 2);
             i++;
             array_operators[i] = '&';
             free(temp);
@@ -84,8 +84,8 @@ int check_logic_ops(char *array_commands[], int i, char array_operators[])
             /* Split the line when '||' is found */
             temp = array_commands[i];
             array_commands[i][j] = '\0';
-            array_commands[i] = str_duplicate(array_commands[i]);
-            array_commands[i + 1] = str_duplicate(temp + j + 2);
+            array_commands[i] = strDuplicate(array_commands[i]);
+            array_commands[i + 1] = strDuplicate(temp + j + 2);
             i++;
             array_operators[i] = '|';
             free(temp);

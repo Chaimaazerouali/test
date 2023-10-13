@@ -51,7 +51,7 @@ typedef struct ShellBuiltins
 {
     char *builtin;
     int (*function)(CustomShellData *data);
-} CustomShellBuiltins;
+} ShellBuiltins;
 
 /************* MAIN FUNCTIONS *************/
 

@@ -29,7 +29,7 @@ int printToStderr(char *str)
  * Return: The number of bytes written.
  * On error, -1 is returned, and errno is set appropriately.
  */
-int printErrorMessage(int errorCode, data_of_program *data)
+int printErrorMessage(int errorCode,CustomShellData*data)
 {
 	char counterAsString[10] = {'\0'};
 

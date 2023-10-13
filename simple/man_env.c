@@ -6,7 +6,7 @@
  * @data: Struct for the program's data.
  * Return: A pointer to the value of the variable, or NULL if it doesn't exist.
  */
-char *getEnvironmentVariable(char *key, data_of_program *data)
+char *getEnvironmentVariable(char *key, CustomShellData *data)
 {
     int i, keyLength = 0;
 
@@ -83,7 +83,7 @@ int setEnvironmentVariable(char *key, char *value, data_of_program *data)
  * @data: Struct for the program's data.
  * Return: 1 if the key was removed, 0 if the key does not exist.
  */
-int removeEnvironmentVariable(char *key, data_of_program *data)
+int removeEnvironmentVariable(char *key, CustomShellData *data)
 {
     int i, keyLength = 0;
 
@@ -123,14 +123,14 @@ int removeEnvironmentVariable(char *key, data_of_program *data)
  * @data: Struct for the program's data.
  * Return: Nothing.
  */
-void printEnvironment(data_of_program *data)
+void printEnvironment(CustomShellData *data)
 {
     int j;
 
     for (j = 0; data->env[j]; j++)
     {
-        _print(data->env[j]);
-        _print("\n");
+        printToStdout(data->env[j]);
+        printToStdout("\n");
     }
 }
 

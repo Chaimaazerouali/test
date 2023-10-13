@@ -5,7 +5,7 @@
  * @data: A pointer to the program's data structure.
  * Return: 0 if successful, -1 on failure.
  */
-int executeCommand(data_of_program *data)
+int executeCommand(CustomShellData *data)
 {
     int returnStatus = 0, childStatus;
     pid_t childPid;
@@ -19,7 +19,7 @@ int executeCommand(data_of_program *data)
     }
 
     /* Check for the program in the file system */
-    returnStatus = findProgram(data);
+    returnStatus = findProgramInPath(data);
     if (returnStatus)
     {
         /* If the program was not found, return an error */

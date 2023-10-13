@@ -9,15 +9,15 @@
  *
  * Return: Nothing, but sets errno on error.
  */
-void expandVariables(data_of_program *data)
+void expandVariables(CustomShellData *data)
 {
     int index1, index2;
     char inputCopy[BUFFER_SIZE] = {0}, expansion[BUFFER_SIZE] = {'\0'}, *temp;
 
-    if (data->inputLine == NULL)
+    if (data->input_line == NULL)
         return;
 
-    copyString(inputCopy, data->inputLine);
+    bufferAdd(inputCopy, data->input_line);
 
     for (index1 = 0; inputCopy[index1]; index1++)
     {
@@ -28,16 +28,16 @@ void expandVariables(data_of_program *data)
         else if (inputCopy[index1] == '$' && inputCopy[index1 + 1] == '?')
         {
             inputCopy[index1] = '\0';
-            longToString(errno, expansion, 10);
-            appendString(inputCopy, expansion);
-            appendString(inputCopy, data->inputLine + index1 + 2);
+            convertLongToString(errno, expansion, 10);
+            bufferAdd(inputCopy, expansion);
+            bufferAdd(inputCopy, data->inputLine + index1 + 2);
         }
         else if (inputCopy[index1] == '$' && inputCopy[index1 + 1] == '$')
         {
             inputCopy[index1] = '\0';
-            longToString(getpid(), expansion, 10);
-            appendString(inputCopy, expansion);
-            appendString(inputCopy, data->inputLine + index1 + 2);
+            convertLongToString(getpid(), expansion, 10);
+            bufferAdd(inputCopy, expansion);
+            bufferAdd(inputCopy, data->input_line + index1 + 2);
         }
         else if (inputCopy[index1] == '$' && (inputCopy[index1 + 1] == ' ' || inputCopy[index1 + 1] == '\0'))
         {
@@ -52,16 +52,16 @@ void expandVariables(data_of_program *data)
             temp = getEnvVariable(expansion, data);
             inputCopy[index1] = '\0';
             expansion[0] = '\0';
-            appendString(expansion, inputCopy + index1 + index2);
-            temp ? appendString(inputCopy, temp) : 1;
-            appendString(inputCopy, expansion);
+            bufferAdd(expansion, inputCopy + index1 + index2);
+            temp ? bufferAdd(inputCopy, temp) : 1;
+            bufferAdd(inputCopy, expansion);
         }
     }
 
-    if (!compareStrings(data->inputLine, inputCopy, 0))
+    if (!strCompare(data->inputLine, inputCopy, 0))
     {
-        free(data->inputLine);
-        data->inputLine = duplicateString(inputCopy);
+        free(data->input_line);
+        data->input_line = strDuplicate(inputCopy);
     }
 }
 
@@ -74,15 +74,15 @@ void expandVariables(data_of_program *data)
  *
  * Return: Nothing, but sets errno on error.
  */
-void expandAliases(data_of_program *data)
+void expandAliases(CustomShellData *data)
 {
     int index1, index2, wasExpanded = 0;
     char inputCopy[BUFFER_SIZE] = {0}, expansion[BUFFER_SIZE] = {'\0'}, *temp;
 
-    if (data->inputLine == NULL)
+    if (data->input_line == NULL)
         return;
 
-    copyString(inputCopy, data->inputLine);
+    bufferAdd(inputCopy, data->input_line);
 
     for (index1 = 0; inputCopy[index1]; index1++)
     {
@@ -91,16 +91,16 @@ void expandAliases(data_of_program *data)
             expansion[index2] = inputCopy[index1 + index2];
         }
         expansion[index2] = '\0';
-        temp = getAlias(data, expansion);
+        temp = getAliasValue(data, expansion);
 
         if (temp)
         {
             expansion[0] = '\0';
-            appendString(expansion, inputCopy + index1 + index2);
+            bufferAdd(expansion, inputCopy + index1 + index2);
             inputCopy[index1] = '\0';
-            appendString(inputCopy, temp);
+            bufferAdd(inputCopy, temp);
             inputCopy[strlen(inputCopy)] = '\0';
-            appendString(inputCopy, expansion);
+            bufferAdd(inputCopy, expansion);
             wasExpanded = 1;
         }
         break;
@@ -108,24 +108,24 @@ void expandAliases(data_of_program *data)
 
     if (wasExpanded)
     {
-        free(data->inputLine);
-        data->inputLine = duplicateString(inputCopy);
+        free(data->input_line);
+        data->input_line = strDuplicate(inputCopy);
     }
 }
 
 /**
- * appendString - Append a string to another string
+ * bufferAdd - Append a string to another string
  * @dest: The destination string.
  * @src: The source string to be appended.
  *
  * Return: Nothing.
  */
-void appendString(char *dest, char *src)
+void bufferAdd(char *dest, char *src)
 {
     int destLength, srcLength, i;
 
-    destLength = stringLength(dest);
-    srcLength = stringLength(src);
+    destLength = strLength(dest);
+    srcLength = strLength(src);
 
     for (i = 0; src[i]; i++)
     {

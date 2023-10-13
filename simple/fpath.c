@@ -7,19 +7,19 @@ int isFileExecutable(char *fullPath);
  * @data: A pointer to the program's data.
  * Return: 0 if the program is found and executable, error code otherwise.
  */
-int findProgramInPath(data_of_program *data)
+int findProgramInPath(CustomShellData*data)
 {
     int i = 0, returnCode = 0;
     char **directories;
 
-    if (!data->commandName)
+    if (!data->command_name)
         return (2);
 
-    if (data->commandName[0] == '/' || data->commandName[0] == '.')
-        return isFileExecutable(data->commandName);
+    if (data->command_name[0] == '/' || data->command_name[0] == '.')
+        return isFileExecutable(data->command_name);
 
     free(data->tokens[0]);
-    data->tokens[0] = strConcat(strDuplicate("/"), data->commandName);
+    data->tokens[0] = strConcat(strDuplicate("/"), data->command_name);
     if (!data->tokens[0])
         return (2);
 
@@ -57,7 +57,7 @@ int findProgramInPath(data_of_program *data)
  * @data: A pointer to the program's data.
  * Return: Array of path directories.
  */
-char **tokenizePath(data_of_program *data)
+char **tokenizePath(CustomShellData *data)
 {
     int i = 0;
     int numDirectories = 2;

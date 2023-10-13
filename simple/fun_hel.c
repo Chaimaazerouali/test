@@ -5,17 +5,17 @@
  * @data: A pointer to the program's data.
  * Return: Nothing.
  */
-void freeRecurrentData(data_of_program *data)
+void freeRecurrentData(CustomShellData *data)
 {
     if (data->tokens)
         freeArrayOfPointers(data->tokens);
-    if (data->inputLine)
-        free(data->inputLine);
-    if (data->commandName)
-        free(data->commandName);
+    if (data->input_line)
+        free(data->input_line);
+    if (data->command_name)
+        free(data->command_name);
 
-    data->inputLine = NULL;
-    data->commandName = NULL;
+    data->input_line = NULL;
+    data->command_name = NULL;
     data->tokens = NULL;
 }
 
@@ -24,16 +24,16 @@ void freeRecurrentData(data_of_program *data)
  * @data: A pointer to the program's data.
  * Return: Nothing.
  */
-void freeAllData(data_of_program *data)
+void freeAllData(CustomShellData *data)
 {
-    if (data->fileDescriptor != 0)
+    if (data->file_descriptor != 0)
     {
-        if (close(data->fileDescriptor))
-            perror(data->programName);
+        if (close(data->file_descriptor))
+            perror(data->program_name);
     }
     freeRecurrentData(data);
-    freeArrayOfPointers(data->environment);
-    freeArrayOfPointers(data->aliasList);
+    freeArrayOfPointers(data->env);
+    freeArrayOfPointers(data->alias_list);
 }
 
 /**
