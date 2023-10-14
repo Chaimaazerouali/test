@@ -10,13 +10,13 @@ int executeBuiltin( CustomShellData *data)
 {
     int iterator;
     ShellBuiltins builtinCommands[] = {
-        {"exit", builtinExit},
-        {"help", builtinHelp},
-        {"cd", builtinCd},
-        {"alias", builtinAlias},
-        {"env", builtinShowEnvironment},
-        {"setenv", builtinSetEnvironment},
-        {"unsetenv", builtinUnsetEnvironment},
+        {"exit", exitShell},
+        {"help", displayHelp},
+        {"cd", changeDirectory},
+        {"alias", manageAliases},
+        {"env", showEnvironment},
+        {"setenv", setEnvironmentVariable},
+        {"unsetenv", unsetEnvironmentVariable},
         {NULL, NULL}
     };
 
