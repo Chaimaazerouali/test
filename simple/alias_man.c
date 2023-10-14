@@ -1,5 +1,4 @@
-include "shell.h"
-
+#include "sheel.h"
 /**
  * showAliases - Prints aliases to the standard output.
  * @data: Struct for the program's data.
@@ -66,7 +65,7 @@ char *getAliasValue(CustomShellData *data, char *aliasName)
  * @data: Struct for the program's data.
  * Return: 0 if success, 1 otherwise.
  */
-int setAlias(char *aliasString,CustomShellData *data)
+int setAlias(char *aliasString, CustomShellData *data)
 {
     char *aliasName, *aliasValue;
     int aliasNameLength;

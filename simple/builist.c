@@ -1,4 +1,4 @@
-#include "shell.h"
+#include "sheel.h"
 
 /**
  * executeBuiltin - Executes the appropriate builtin command.
@@ -9,7 +9,7 @@
 int executeBuiltin( CustomShellData *data)
 {
     int iterator;
-    builtins builtinCommands[] = {
+    ShellBuiltins builtinCommands[] = {
         {"exit", builtinExit},
         {"help", builtinHelp},
         {"cd", builtinCd},

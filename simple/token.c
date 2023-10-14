@@ -1,4 +1,4 @@
-#include "shell.h"
+#include "sheel.h"
 
 /**
  * customTokenizer - This function separates the string using a designated delimiter.
@@ -8,13 +8,13 @@
 void customTokenizer(CustomShellData *data)
 {
     char *customDelimiter = " \t";
-    int i, j, tokenCounter = 2, strLength;
+    int i, j, tokenCounter = 2, stLength;
 
-    strLength = strLength(data->input_line);
-    if (strLength)
+    stLength = strLength(data->input_line);
+    if (stLength)
     {
-        if (data->input_line[strLength - 1] == '\n')
-            data->input_line[strLength - 1] = '\0';
+        if (data->input_line[stLength - 1] == '\n')
+            data->input_line[stLength - 1] = '\0';
     }
 
     for (i = 0; data->input_line[i]; i++)

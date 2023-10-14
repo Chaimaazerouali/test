@@ -1,21 +1,77 @@
-#ifndef CUSTOM_SHELL_H
-#define CUSTOM_SHELL_H
+#ifndef _SHEEL_H
+#define _SHEEL_H
 
-#include <stdio.h> /* for printf */
-#include <unistd.h> /* for fork, execve */
+#include <stdio.h> // for printf
+#include <unistd.h> // for fork, execve
 #include <stdlib.h>
-#include <string.h> /* for strtok */
+#include <string.h> // for strtok
 #include <stddef.h>
-#include <errno.h> /* for errno and perror */
-#include <sys/types.h> /* for type pid */
-#include <sys/wait.h> /* for wait */
-#include <sys/stat.h> /* for use of stat function */
-#include <signal.h> /* for signal management */
-#include <fcntl.h> /* for open files */
+#include <errno.h> // for errno and perror
+#include <sys/types.h> // for type pid
+#include <sys/wait.h> // for wait
+#include <sys/stat.h> // for use of stat function
+#include <signal.h> // for signal management
+#include <fcntl.h> // for open files
 
 /************* MACROS **************/
+#ifndef CUSTOM_COMMANDS_H
+#define CUSTOM_COMMANDS_H
 
-#include "macros.h" /* for message, help, and prompt */
+/* Prompt to be printed */
+#define PROMPT_MSG "$" // Used as a shell prompt
+
+/* Unused attribute for variables */
+#define UNUSED __attribute__((unused))
+
+/* Buffer size for each read call in _getline */
+#define BUFFER_SIZE 1024
+
+/************* FORMATTED STRINGS FOR CUSTOM BUILT-IN COMMANDS **************/
+
+#define CUSTOM_HELP_CD_MSG "cd=\n" \
+"cd:\tcd [directory]\n\n" \
+"	Change the current working directory.\n\n" \
+"	If no directory argument is provided, the command will interpret it as 'cd $HOME'.\n" \
+"	If the argument is '-', the command will interpret it as 'cd $OLDPWD'.\n\n"
+
+#define CUSTOM_HELP_EXIT_MSG "exit=\n" \
+"exit:\texit [STATUS]\n\n" \
+"	Exit the custom shell.\n\n" \
+"	Exits the shell with an optional exit status 'STATUS'. If 'STATUS' is omitted,\n" \
+"	the exit status will be that of the last executed command.\n\n"
+
+#define CUSTOM_HELP_ENV_MSG "env=\n" \
+"env:\tenv\n\n" \
+"	Print the environment variables.\n\n" \
+"	The 'env' command prints a complete list of environment variables.\n\n"
+
+#define CUSTOM_HELP_SETENV_MSG "setenv=\n" \
+"setenv:\tsetenv VARIABLE VALUE\n\n" \
+"	Change or add an environment variable.\n\n" \
+"	Initialize a new environment variable or modify an existing one.\n" \
+"	Prints an error message when the correct number of arguments is not provided.\n\n"
+
+#define CUSTOM_HELP_UNSETENV_MSG "unsetenv=\n" \
+"unsetenv:\tunsetenv VARIABLE\n\n" \
+"	Delete an environment variable.\n\n" \
+"	The 'unsetenv' function deletes a specified variable from the environment.\n" \
+"	Prints an error message when the correct number of arguments is not provided.\n\n"
+
+#define CUSTOM_HELP_MSG "help=\n" \
+"help:\thelp [BUILTIN_NAME]\n\n" \
+"	Display information about custom built-in commands.\n\n" \
+"	Displays brief summaries of custom built-in commands. If 'BUILTIN_NAME' is\n" \
+"	specified, it provides detailed help for the specified command, otherwise,\n" \
+"	it lists available custom built-in commands.\n\n" \
+"	Available custom built-in commands:\n\n" \
+"	cd\t[directory]\n" \
+"	exit\t[status]\n" \
+"	env\n" \
+"	setenv\t[variable value]\n" \
+"	unsetenv\t[variable]\n" \
+"	help\t[built_name]\n\n"
+
+#endif
 
 /************* STRUCTURES **************/
 
@@ -64,7 +120,7 @@ void initializeData(CustomShellData *data, int argc, char *argv[], char **env);
 void runShell(char *prompt, CustomShellData *data);
 
 /* Print the prompt on a new line */
-void  handleCtrlC(int operation UNUSED);
+void handleCtrlC(int operation UNUSED);
 
 /*========  custom_getline.c  ========*/
 
@@ -162,7 +218,7 @@ int unsetEnvironmentVariable(CustomShellData *data);
 char *getEnvironmentVariable(char *name, CustomShellData *data);
 
 /* Set the value of an environment variable */
-int setEnvironmentVariable(char *key, char *value, CustomShellData *data);
+int setenvironmentVariable(char *key, char *value, CustomShellData *data);
 
 /* Remove an environment variable */
 int removeEnvironmentVariable(char *key, CustomShellData *data);
@@ -178,7 +234,7 @@ void printEnvironment(CustomShellData *data);
 int printToStdout(char *string);
 
 /* Print a string to standard error */
-int  printToStderr(char *string);
+int printToStderr(char *string);
 
 /* Print an error message with a specific error code */
 int printErrorMessage(int error_code, CustomShellData *data);
@@ -208,7 +264,7 @@ void strReverse(char *string);
 void convertLongToString(long number, char *string, int base);
 
 /* Convert a string to an integer */
-int  parseInt(char *s);
+int parseInt(char *s);
 
 /* Count occurrences of a character in a string */
 int countCharacterOccurrences(char *string, char *character);

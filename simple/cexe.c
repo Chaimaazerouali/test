@@ -1,4 +1,4 @@
-#include "shell.h"
+#include "sheel.h"
 
 /**
  * executeCommand - Execute a command with its full path and environment variables.

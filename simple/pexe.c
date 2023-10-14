@@ -1,4 +1,4 @@
-#include "shell.h"
+#include "sheel.h"
 
 /**
  * expandVariables - Expand variables
@@ -120,7 +120,7 @@ void expandAliases(CustomShellData *data)
  *
  * Return: Nothing.
  */
-void bufferAdd(char *dest, char *src)
+int bufferAdd(char *dest, char *src)
 {
     int destLength, srcLength, i;
 
