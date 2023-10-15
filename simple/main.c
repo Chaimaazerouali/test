@@ -1,13 +1,13 @@
 #include "sheel.h"
 
 /**
- * shellMain - Entry point of the shell program.
+ * main - Entry point of the shell program.
  * @argc: Number of command-line arguments.
  * @argv: Array of command-line arguments.
  * @env: Array of environment variables.
  * Return: Always returns 0 on successful execution.
  */
-int shellMain(int argc, char *argv[], char *env[])
+int main(int argc, char *argv[], char *env[])
 {
 	 CustomShellData data_struct = {NULL}, *data = &data_struct;
 	char *shell_prompt = "";
