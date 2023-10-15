@@ -32,7 +32,7 @@ void convertLongToString(long num, char *result, int base)
         result[idx++] = '-';
 
     result[idx] = '\0';
-    reverseString(result);
+    strReverse(result);
 }
 
 /**

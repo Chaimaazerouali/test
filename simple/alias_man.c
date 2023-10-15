@@ -59,50 +59,62 @@ char *getAliasValue(CustomShellData *data, char *aliasName)
     return NULL;
 }
 
+
 /**
- * setAlias - Adds or overrides an alias.
- * @aliasString: Alias to be set in the form (name='value').
- * @data: Struct for the program's data.
- * Return: 0 if success, 1 otherwise.
+ * setAlias - Define or update an alias.
+ * @alias_string: The string containing the alias definition.
+ * @program_data: A structure containing program data.
+ * Return: 0 if successful, or another number if there's an issue.
  */
-int setAlias(char *aliasString, CustomShellData *data)
+int setAlias(char *alias_string, CustomShellData *program_data)
 {
-    char *aliasName, *aliasValue;
-    int aliasNameLength;
+    int in, jx;
+    char alias_name[250] = {'0'}, *alias_value = NULL;
 
-    if (aliasString == NULL || data->alias_list == NULL)
+    /* Validate the arguments */
+    if (alias_string == NULL || program_data->alias_list == NULL)
         return 1;
 
-    aliasName = strtok(aliasString, "=");
-    if (!aliasName)
-        return 1;
-
-    aliasNameLength = strLength(aliasName);
-    aliasValue = strtok(NULL, "");
-
-    if (!aliasValue)
-        aliasValue = ""; /* If no value provided, set it to an empty string */
-
-    for (int i = 0; data->alias_list[i]; i++)
+    /* Iterate through the alias string to find the '=' character */
+    for (in = 0; alias_string[in]; in++)
     {
-        if (strCompare(aliasName, data->alias_list[i], aliasNameLength) &&
-            data->alias_list[i][aliasNameLength] == '=')
+        if (alias_string[in] != '=')
         {
-            /* If the alias already exists, update its value*/
-            snprintf(data->alias_list[i], sizeof(data->alias_list[i]), "%s=%s", aliasName, aliasValue);
-            return 0;
+            alias_name[in] = alias_string[in];
+        }
+        else
+        {
+            /* Search if the value of the alias is another alias */
+            alias_value = getAliasValue(program_data, alias_string + in + 1);
+            break;
         }
     }
 
-    // If the alias doesn't exist, create a new one
-    if (snprintf(data->alias_list[data->alias_count], sizeof(data->alias_list[data->alias_count]),
-                  "%s=%s", aliasName, aliasValue) >= sizeof(data->alias_list[data->alias_count]))
+    /* Iterate through the alias list and check for a match with the alias name */
+    for (jx = 0; program_data->alias_list[jx]; jx++)
     {
-        // The alias is too long to fit into the allocated memory, handle this case accordingly
-       return 1;
+        if (strCompare(alias_name,program_data->alias_list[jx], in) &&
+            program_data->alias_list[jx][in] == '=')
+        {
+            /* If the alias already exists, free the previous one */
+            free(program_data->alias_list[jx]);
+            break;
+        }
     }
 
-    data->alias_count++;
+    /* Add the alias */
+    if (alias_value)
+    {
+        bufferAdd(alias_name, "=");
+	bufferAdd(alias_name, alias_value);
+        program_data->alias_list[jx] = strDuplicate(alias_string);
+    }
+    else
+    {
+        /* If the alias does not exist, create a new one */
+        program_data->alias_list[jx] = strDuplicate(alias_string);
+    }
+
     return 0;
 }
 

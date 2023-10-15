@@ -30,7 +30,7 @@ void expandVariables(CustomShellData *data)
             inputCopy[index1] = '\0';
             convertLongToString(errno, expansion, 10);
             bufferAdd(inputCopy, expansion);
-            bufferAdd(inputCopy, data->inputLine + index1 + 2);
+            bufferAdd(inputCopy, data->input_line + index1 + 2);
         }
         else if (inputCopy[index1] == '$' && inputCopy[index1 + 1] == '$')
         {
@@ -49,7 +49,7 @@ void expandVariables(CustomShellData *data)
             {
                 expansion[index2 - 1] = inputCopy[index1 + index2];
             }
-            temp = getEnvVariable(expansion, data);
+            temp = getEnvironmentVariable(expansion, data);
             inputCopy[index1] = '\0';
             expansion[0] = '\0';
             bufferAdd(expansion, inputCopy + index1 + index2);
@@ -58,7 +58,7 @@ void expandVariables(CustomShellData *data)
         }
     }
 
-    if (!strCompare(data->inputLine, inputCopy, 0))
+    if (!strCompare(data->input_line, inputCopy, 0))
     {
         free(data->input_line);
         data->input_line = strDuplicate(inputCopy);
@@ -122,16 +122,13 @@ void expandAliases(CustomShellData *data)
  */
 int bufferAdd(char *dest, char *src)
 {
-    int destLength, srcLength, i;
+    int len, ix;
 
-    destLength = strLength(dest);
-    srcLength = strLength(src);
-
-    for (i = 0; src[i]; i++)
-    {
-        dest[destLength + i] = src[i];
-    }
-
-    dest[destLength + i] = '\0';
+	len = strLength(dest);
+	for (ix = 0; src[ix]; ix++)
+	{
+		dest[len + ix] = src[ix];
+	}
+	dest[len + ix] = '\0';
+	return (len + ix);
 }
-

@@ -11,7 +11,7 @@ int executeCommand(CustomShellData *data)
     pid_t childPid;
 
     /* Check if the program is a built-in command */
-    returnStatus = executeBuiltIn(data);
+    returnStatus = executeBuiltin(data);
     if (returnStatus != -1)
     {
         /* If the program was found among built-ins, execute it */

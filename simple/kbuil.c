@@ -1,4 +1,4 @@
-#include "my_shell.h"
+#include "sheel.h"
 
 /**
  * exitShell - Exit the program with a specified status code.
@@ -16,7 +16,7 @@ int exitShell(CustomShellData *program_data)
         {
             if ((program_data->tokens[1][idx] < '0' || program_data->tokens[1][idx] > '9') && program_data->tokens[1][idx] != '+')
             {
-                errno = EINVAL;
+                 errno = EINVAL;
                 return EINVAL;
             }
         }
@@ -33,18 +33,18 @@ int exitShell(CustomShellData *program_data)
  */
 int changeDirectory(CustomShellData *program_data)
 {
-    char *home_directory = getEnvironmentVariable("HOME", program_data);
-    char *old_directory = NULL;
-    char previous_directory[128] = {0};
+    char *homeDirectory = getEnvironmentVariable("HOME", program_data);
+    char *previousDirectory = NULL;
+    char previous_dir[128] = {0};
     int error_code = 0;
 
     if (program_data->tokens[1])
     {
-        if (strCompare(program_data->arguments[1], "-", 0))
+        if (strCompare(program_data->tokens[1], "-", 0))
         {
-            old_directory = getEnvironmentVariable("OLDPWD", program_data);
-            if (old_directory)
-                error_code = setWorkingDirectory(program_data, old_directory);
+            previousDirectory = getEnvironmentVariable("OLDPWD", program_data);
+            if (previousDirectory)
+                error_code = setWorkingDirectory(program_data, previousDirectory);
             printToStdout(getEnvironmentVariable("PWD", program_data));
             printToStdout("\n");
 
@@ -52,20 +52,18 @@ int changeDirectory(CustomShellData *program_data)
         }
         else
         {
-            return setWorkingDirectory(program_data, program_data->arguments[1]);
+            return setWorkingDirectory(program_data, program_data->tokens[1]);
         }
     }
     else
     {
-        if (!home_directory)
-            home_directory = getcwd(previous_directory, 128);
+        if (!homeDirectory)
+            homeDirectory = getcwd(previous_dir, 128);
 
-        return setWorkingDirectory(program_data, home_directory);
+        return setWorkingDirectory(program_data, homeDirectory);
     }
-
     return 0;
 }
-
 /**
  * setWorkingDirectory - Set the working directory.
  * @program_data: A structure containing program data.
@@ -87,9 +85,9 @@ int setWorkingDirectory(CustomShellData *program_data, char *new_directory)
             errno = ENOENT;
             return ENOENT;
         }
-        setEnvironmentVariable("PWD", new_directory, program_data);
+        setenvironmentVariable("PWD", new_directory, program_data);
     }
-    setEnvironmentVariable("OLDPWD", previous_directory, program_data);
+    setenvironmentVariable("OLDPWD", previous_directory, program_data);
     return 0;
 }
 
@@ -103,7 +101,7 @@ int displayHelp(CustomShellData *program_data)
     int idx, length = 0;
     char *messages[6] = {NULL};
 
-    messages[0] = HELP_MESSAGE;
+    messages[0] = CUSTOM_HELP_MSG;
 
     /* Validate arguments */
     if (program_data->tokens[1] == NULL)
@@ -117,15 +115,15 @@ int displayHelp(CustomShellData *program_data)
         perror(program_data->program_name);
         return 5;
     }
-    messages[1] = HELP_EXIT_MESSAGE;
-    messages[2] = HELP_ENV_MESSAGE;
-    messages[3] = HELP_SETENV_MESSAGE;
-    messages[4] = HELP_UNSETENV_MESSAGE;
-    messages[5] = HELP_CD_MESSAGE;
+    messages[1] = CUSTOM_HELP_EXIT_MSG;
+    messages[2] = CUSTOM_HELP_ENV_MSG;
+    messages[3] = CUSTOM_HELP_SETENV_MSG;
+    messages[4] = CUSTOM_HELP_UNSETENV_MSG;
+    messages[5] = CUSTOM_HELP_CD_MSG;
 
     for (idx = 0; messages[idx]; idx++)
     {
-        length = strLengh(program_data->tokens[1]);
+        length = strLength(program_data->tokens[1]);
         if (strCompare(program_data->tokens[1], messages[idx], length))
         {
             printToStdout(messages[idx] + length + 1);
@@ -148,17 +146,17 @@ int manageAliases(CustomShellData *program_data)
     int idx = 0;
 
     /* If there are no arguments, print all aliases */
-    if (program_data->arguments[1] == NULL)
+    if (program_data->tokens[1] == NULL)
         return showAliases(program_data, NULL);
 
     while (program_data->tokens[++idx])
     {
         /* If there are arguments, set or print each alias */
-        if (countCharacterOccurrences(program_data->arguments[idx], "="))
+        if (countCharacterOccurrences(program_data->tokens[idx], "="))
             setAlias(program_data->tokens[idx], program_data);
         else
-            showAliases(program_data, program_data->tokens[idx])
-
+            showAliases(program_data, program_data->tokens[idx]);
+    }
     return 0;
 }
 

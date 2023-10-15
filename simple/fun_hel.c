@@ -2,14 +2,14 @@
 
 
 /**
- * freeRecurrentData - Frees the fields needed at each loop iteration.
+ * free_recurring_data- Frees the fields needed at each loop iteration.
  * @data: A pointer to the program's data.
  * Return: Nothing.
  */
-void freeRecurrentData(CustomShellData *data)
+void free_recurring_data(CustomShellData *data)
 {
     if (data->tokens)
-        freeArrayOfPointers(data->tokens);
+        free_pointer_array(data->tokens);
     if (data->input_line)
         free(data->input_line);
     if (data->command_name)
@@ -21,28 +21,28 @@ void freeRecurrentData(CustomShellData *data)
 }
 
 /**
- * freeAllData - Frees all fields of the program's data.
+ * free_all_shell_data - Frees all fields of the program's data.
  * @data: A pointer to the program's data.
  * Return: Nothing.
  */
-void freeAllData(CustomShellData *data)
+void free_all_shell_data(CustomShellData *data)
 {
     if (data->file_descriptor != 0)
     {
         if (close(data->file_descriptor))
             perror(data->program_name);
     }
-    freeRecurrentData(data);
-    freeArrayOfPointers(data->env);
-    freeArrayOfPointers(data->alias_list);
+    free_recurring_data(data);
+    free_pointer_array(data->env);
+    free_pointer_array(data->alias_list);
 }
 
 /**
- * freeArrayOfPointers - Frees each pointer in an array of pointers and the array itself.
+ * free_pointer_array - Frees each pointer in an array of pointers and the array itself.
  * @array: The array of pointers.
  * Return: Nothing.
  */
-void freeArrayOfPointers(char **array)
+void free_pointer_array(char **array)
 {
     int i;
 

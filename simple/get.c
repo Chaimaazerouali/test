@@ -34,9 +34,9 @@ int custom_getline(CustomShellData *data)
         /* Split lines by '\n' or ';' */
         i = 0;
         do {
-            array_commands[i] = strDuplicate(_strtok(i ? NULL : buff, "\n;"));
+            array_commands[i] = strDuplicate(customStrtok(i ? NULL : buff, "\n;"));
             /* Check and split for '&&' and '||' operators */
-            i = check_logic_ops(array_commands, i, array_operators);
+            i = check_logical_operators(array_commands, i, array_operators);
         } while (array_commands[i++]);
     }
 
@@ -52,14 +52,14 @@ int custom_getline(CustomShellData *data)
 }
 
 /**
- * check_logic_ops - Checks and splits for '&&' and '||' operators.
+ * check_logical_operators - Checks and splits for '&&' and '||' operators.
  * @array_commands: Array of commands.
  * @i: Index in the array_commands to be checked.
  * @array_operators: Array of logical operators for each previous command.
  *
  * Return: Index of the last command in the array_commands.
  */
-int check_logic_ops(char *array_commands[], int i, char array_operators[])
+int check_logical_operators(char *array_commands[], int i, char array_operators[])
 {
     char *temp = NULL;
     int j;

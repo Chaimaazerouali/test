@@ -43,7 +43,7 @@ void handleCtrlC(int signal UNUSED)
  * @argv: Array of command-line arguments.
  * @env: Array of environment variables.
  */
-void initializeData(data_of_program *data, int argc, char *argv[], char **env)
+void initializeData(CustomShellData *data, int argc, char *argv[], char **env)
 {
 	int i = 0;
 
@@ -110,7 +110,7 @@ void runShell(char *prompt,CustomShellData *data)
 			customTokenizer(data);
 			if (data->tokens[0])
 			{
-				errorCode = execute(data);
+				errorCode = executeCommand(data);
 				if (errorCode != 0)
 					printErrorMessage(errorCode, data);
 			}

@@ -33,11 +33,11 @@ int printErrorMessage(int errorCode,CustomShellData*data)
 {
 	char counterAsString[10] = {'\0'};
 
-	convertLongToString((long)data->executionCounter, counterAsString, 10);
+	convertLongToString((long)data->exec_counter, counterAsString, 10);
 
 	if (errorCode == 2 || errorCode == 3)
 	{
-		printToStderr(data->programName);
+		printToStderr(data->program_name);
 		printToStderr(": ");
 		printToStderr(counterAsString);
 		printToStderr(": ");
@@ -51,20 +51,20 @@ int printErrorMessage(int errorCode,CustomShellData*data)
 	}
 	else if (errorCode == 127)
 	{
-		printToStderr(data->programName);
+		printToStderr(data->program_name);
 		printToStderr(": ");
 		printToStderr(counterAsString);
 		printToStderr(": ");
-		printToStderr(data->commandName);
+		printToStderr(data->command_name);
 		printToStderr(": not found\n");
 	}
 	else if (errorCode == 126)
 	{
-		printToStderr(data->programName);
+		printToStderr(data->program_name);
 		printToStderr(": ");
 		printToStderr(counterAsString);
 		printToStderr(": ");
-		printToStderr(data->commandName);
+		printToStderr(data->command_name);
 		printToStderr(": Permission denied\n");
 	}
 	return (0);

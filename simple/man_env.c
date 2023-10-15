@@ -32,14 +32,14 @@ char *getEnvironmentVariable(char *key, CustomShellData *data)
 }
 
 /**
- * setEnvironmentVariable - Overwrite the value of an environment variable
+ * setenvironmentVariable - Overwrite the value of an environment variable
  * or create it if it does not exist.
  * @key: Name of the variable to set.
  * @value: New value.
  * @data: Struct for the program's data.
  * Return: 1 if the parameters are NULL, 2 if there is an error, or 0 if successful.
  */
-int setEnvironmentVariable(char *key, char *value, data_of_program *data)
+int setenvironmentVariable(char *key, char *value, CustomShellData *data)
 {
     int i, keyLength = 0, isNewKey = 1;
 

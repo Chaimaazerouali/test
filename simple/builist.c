@@ -6,7 +6,7 @@
  * Return: Returns the return value of the executed function if there is a match,
  * otherwise returns -1.
  **/
-int executeBuiltin( CustomShellData *data)
+int executeBuiltin(CustomShellData *data)
 {
     int iterator;
     ShellBuiltins builtinCommands[] = {

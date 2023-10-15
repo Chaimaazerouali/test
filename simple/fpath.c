@@ -41,14 +41,14 @@ int findProgramInPath(CustomShellData*data)
             errno = 0;
             free(data->tokens[0]);
             data->tokens[0] = strDuplicate(directories[i]);
-            freeArrayOfPointers(directories);
+            free_pointer_array(directories);
             return (returnCode);
         }
     }
 
     free(data->tokens[0]);
     data->tokens[0] = NULL;
-    freeArrayOfPointers(directories);
+    free_pointer_array(directories);
     return (returnCode);
 }
 
@@ -64,7 +64,7 @@ char **tokenizePath(CustomShellData *data)
     char **tokens = NULL;
     char *pathValue;
 
-    pathValue = envGetKey("PATH", data);
+    pathValue = getEnvironmentVariable("PATH", data);
 
     if ((pathValue == NULL) || pathValue[0] == '\0')
     {
@@ -83,11 +83,11 @@ char **tokenizePath(CustomShellData *data)
 
     tokens = malloc(sizeof(char *) * numDirectories);
     i = 0;
-    tokens[i] = strDuplicate(_strtok(pathValue, ":"));
+    tokens[i] = strDuplicate(customStrtok(pathValue, ":"));
 
     while (tokens[i++])
     {
-        tokens[i] = strDuplicate(_strtok(NULL, ":"));
+        tokens[i] = strDuplicate(customStrtok(NULL, ":"));
     }
 
     free(pathValue);
