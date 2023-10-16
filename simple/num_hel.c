@@ -1,10 +1,10 @@
 #include "sheel.h"
 
 /**
- * convertLongToString - Converts a number to a string.
+ * convertLongToString -  Converts a number to a string representation.
  * @number: The number to be converted to a string.
- * @string: The buffer to save the number as a string.
- * @base: The base for number conversion.
+ * @result: The buffer to save the number as a string.
+ * @base: The base for number conversion (e.g., 10 for decimal, 16 for hex).
  * 
  * Return: Nothing.
  */
@@ -38,7 +38,7 @@ void convertLongToString(long num, char *result, int base)
 /**
  * parseInt - Converts a string to an integer.
  * @str: Pointer to the source string.
- * Return: The integer value of the string or 0.
+ * Return: The integer value of the string or 0 if the string is not a valid integer.
  */
 int parseInt(char *str)
 {
@@ -63,10 +63,11 @@ int parseInt(char *str)
 }
 
 /**
- * countCharacterOccurrences - Counts the occurrences of a character in a string.
+ * countCharacterOccurrences -  Counts the occurrences of a specific character in a string.
  * @str: Pointer to the source string.
- * @charToCount: String containing characters to be counted.
- * Return: The count of characters in the string.
+ * @charToCount: Pointer to a string containing characters to be counted (single character).
+ * 
+ * Return: The count of the specified character in the string.
  */
 int countCharacterOccurrences(char *str, char *charToCount)
 {

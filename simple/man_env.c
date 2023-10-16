@@ -3,28 +3,28 @@
 /**
  * getEnvironmentVariable - Get the value of an environment variable.
  * @key: The name of the environment variable of interest.
- * @data: Struct for the program's data.
+ * @shellData: Pointer to the custom shell data structure.
  * Return: A pointer to the value of the variable, or NULL if it doesn't exist.
  */
-char *getEnvironmentVariable(char *key, CustomShellData *data)
+char *getEnvironmentVariable(char *key, CustomShellData *shellData)
 {
-    int i, keyLength = 0;
+    int i, keyL = 0;
 
-    /* Validate the arguments */
-    if (key == NULL || data->env == NULL)
+        /* Validate the input arguments */
+    if (key == NULL || shellData->env == NULL)
         return (NULL);
 
-    /* Obtain the length of the variable requested */
-    keyLength = strLength(key);
+        /* Determine the length of the variable name */
+    keyL = strLength(key);
 
-    for (i = 0; data->env[i]; i++)
+    for (i = 0; shellData->env[i]; i++)
     {
         /* Iterate through the environment and check for a match */
-        if (strCompare(key, data->env[i], keyLength) &&
-            data->env[i][keyLength] == '=')
+        if (strCompare(key, shellData->env[i], keyL) &&
+            shellData->env[i][keyL] == '=')
         {
             /* Return the value of the key in the format "NAME=value" */
-            return (data->env[i] + keyLength + 1);
+            return (shellData->env[i] + keyL + 1);
         }
     }
     /* Return NULL if the variable was not found */
@@ -36,42 +36,42 @@ char *getEnvironmentVariable(char *key, CustomShellData *data)
  * or create it if it does not exist.
  * @key: Name of the variable to set.
  * @value: New value.
- * @data: Struct for the program's data.
+ * @shellData: Pointer to the custom shell data structure.
  * Return: 1 if the parameters are NULL, 2 if there is an error, or 0 if successful.
  */
-int setenvironmentVariable(char *key, char *value, CustomShellData *data)
+int setenvironmentVariable(char *key, char *value, CustomShellData *shellData)
 {
-    int i, keyLength = 0, isNewKey = 1;
+    int i, keyL = 0, isNewKey = 1;
 
     /* Validate the arguments */
-    if (key == NULL || value == NULL || data->env == NULL)
+    if (key == NULL || value == NULL || shellData->env == NULL)
         return (1);
 
-    /* Obtain the length of the variable requested */
-    keyLength = strLength(key);
+        /* Determine the length of the variable name */
+    keyL = strLength(key);
 
-    for (i = 0; data->env[i]; i++)
+    for (i = 0; shellData->env[i]; i++)
     {
         /* Iterate through the environment and check for a match */
-        if (strCompare(key, data->env[i], keyLength) &&
-            data->env[i][keyLength] == '=')
+        if (strCompare(key, shellData->env[i], keyL) &&
+            shellData->env[i][keyL] == '=')
         {
             /* If the key already exists, free the entire variable */
             isNewKey = 0;
-            free(data->env[i]);
+            free(shellData->env[i]);
             break;
         }
     }
 
     /* Create a string in the format "key=value" */
-    data->env[i] = strConcat(strDuplicate(key), "=");
-    data->env[i] = strConcat(data->env[i], value);
+    shellData->env[i] = strConcat(strDuplicate(key), "=");
+    shellData->env[i] = strConcat(shellData->env[i], value);
 
     if (isNewKey)
     {
         /* If the variable is new, it is created at the end of the current list
            and we need to put a NULL value in the next position */
-        data->env[i + 1] = NULL;
+        shellData->env[i + 1] = NULL;
     }
 
     return (0);
@@ -80,38 +80,38 @@ int setenvironmentVariable(char *key, char *value, CustomShellData *data)
 /**
  * removeEnvironmentVariable - Remove a key from the environment.
  * @key: The key to remove.
- * @data: Struct for the program's data.
+ * @shellData:  Pointer to the custom shell data structure.
  * Return: 1 if the key was removed, 0 if the key does not exist.
  */
-int removeEnvironmentVariable(char *key, CustomShellData *data)
+int removeEnvironmentVariable(char *key, CustomShellData *shellData)
 {
-    int i, keyLength = 0;
+    int i, keyL = 0;
 
     /* Validate the arguments */
-    if (key == NULL || data->env == NULL)
+    if (key == NULL || shellData->env == NULL)
         return (0);
 
-    /* Obtain the length of the variable requested */
-    keyLength = strLength(key);
+        /* Determine the length of the variable name */
+    keyL = strLength(key);
 
-    for (i = 0; data->env[i]; i++)
+    for (i = 0; shellData->env[i]; i++)
     {
         /* Iterate through the environment and check for a match */
-        if (strCompare(key, data->env[i], keyLength) &&
-            data->env[i][keyLength] == '=')
+        if (strCompare(key, shellData->env[i], keyL) &&
+            shellData->env[i][keyL] == '=')
         {
             /* If the key already exists, remove it */
-            free(data->env[i]);
+            free(shellData->env[i]);
 
             /* Move the other keys one position down */
             i++;
-            for (; data->env[i]; i++)
+            for (; shellData->env[i]; i++)
             {
-                data->env[i - 1] = data->env[i];
+                shellData->env[i - 1] = shellData->env[i];
             }
 
             /* Put a NULL value at the new end of the list */
-            data->env[i - 1] = NULL;
+            shellData->env[i - 1] = NULL;
             return (1);
         }
     }
@@ -120,16 +120,16 @@ int removeEnvironmentVariable(char *key, CustomShellData *data)
 
 /**
  * printEnvironment - Print the current environment.
- * @data: Struct for the program's data.
+ * @shellData: Struct for the program's data.
  * Return: Nothing.
  */
-void printEnvironment(CustomShellData *data)
+void printEnvironment(CustomShellData *shellData)
 {
-    int j;
+    int jx;
 
-    for (j = 0; data->env[j]; j++)
+    for (jx = 0; shellData->env[jx]; jx++)
     {
-        printToStdout(data->env[j]);
+        printToStdout(shellData->env[jx]);
         printToStdout("\n");
     }
 }

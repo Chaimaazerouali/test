@@ -1,29 +1,29 @@
-#ifndef _SHEEL_H
-#define _SHEEL_H
+#ifndef _SHELL_H
+#define _SHELL_H
 
-#include <stdio.h> // for printf
-#include <unistd.h> // for fork, execve
+#include <stdio.h> /* for printf */
+#include <unistd.h> /* for fork, execve */
 #include <stdlib.h>
-#include <string.h> // for strtok
+#include <string.h> /* for strtok */
 #include <stddef.h>
-#include <errno.h> // for errno and perror
-#include <sys/types.h> // for type pid
-#include <sys/wait.h> // for wait
-#include <sys/stat.h> // for use of stat function
-#include <signal.h> // for signal management
-#include <fcntl.h> // for open files
+#include <errno.h> /* for errno and perror */
+#include <sys/types.h> /* for type pid */
+#include <sys/wait.h> /* for wait */
+#include <sys/stat.h> /* for use of stat function */
+#include <signal.h> /* for signal management */
+#include <fcntl.h> /* for open files */
 
 /************* MACROS **************/
 #ifndef CUSTOM_COMMANDS_H
 #define CUSTOM_COMMANDS_H
 
 /* Prompt to be printed */
-#define PROMPT_MSG "$" // Used as a shell prompt
+#define PROMPT_MSG "$" /* Used as a shell prompt */
 
 /* Unused attribute for variables */
 #define UNUSED __attribute__((unused))
 
-/* Buffer size for each read call in _getline */
+/* Buffer size for each read call in get */
 #define BUFFER_SIZE 1024
 
 /************* FORMATTED STRINGS FOR CUSTOM BUILT-IN COMMANDS **************/
@@ -280,5 +280,5 @@ char *getAliasValue(CustomShellData *data, char *alias);
 /* Set an alias */
 int setAlias(char *alias_string, CustomShellData *data);
 
-#endif /* CUSTOM_SHELL_H */
+#endif /* _SHEEL_H */
 

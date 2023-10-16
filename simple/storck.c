@@ -1,44 +1,44 @@
 #include "sheel.h"
 
 /**
- * customStrtok - Separates strings with delimiters.
- * @line: Pointer to the array received from getline.
- * @delim: Characters used to mark off the string in parts.
- * Return: A pointer to the created token.
- */
-char *customStrtok(char *line, char *delim)
+* customStrtok - Separates strings with delimiters.
+* @str: Pointer to the array received from getline.
+* @delimiters: Characters used to mark off the string in parts.
+* Return: A pointer to the created token.
+*/
+char *customStrtok(char *str, char *delimiters)
 {
-	int index;
-	static char *str;
-	char *copystr;
+int index;
+static char *token;
+char *strcopy;
 
-	if (line != NULL)
-		str = line;
-	for (; *str != '\0'; str++)
-	{
-		for (index = 0; delim[index] != '\0'; index++)
-		{
-			if (*str == delim[index])
-				break;
-		}
-		if (delim[index] == '\0')
-			break;
-	}
-	copystr = str;
-	if (*copystr == '\0')
-		return (NULL);
-	for (; *str != '\0'; str++)
-	{
-		for (index = 0; delim[index] != '\0'; index++)
-		{
-			if (*str == delim[index])
-			{
-				*str = '\0';
-				str++;
-				return (copystr);
-			}
-		}
-	}
-	return (copystr);
+if (str != NULL)
+token = str;
+for (; *token != '\0'; token++)
+{
+for (index = 0; delimiters[index] != '\0'; index++)
+{
+if (*token == delimiters[index])
+break;
+}
+if (delimiters[index] == '\0')
+break;
+}
+strcopy = token;
+if (*strcopy == '\0')
+return (NULL);
+for (; *token != '\0'; token++)
+{
+for (index = 0; delimiters[index] != '\0'; index++)
+{
+if (*token == delimiters[index])
+{
+*token = '\0';
+token++;
+return (strcopy);
+}
+}
+}
+return (strcopy);
 }
 
