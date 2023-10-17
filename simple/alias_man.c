@@ -29,7 +29,7 @@ aliasFound = 1;
 }
 }
 
-return aliasFound ? 0 : 1;
+return (aliasFound ? 0 : 1);
 }
 
 /**
@@ -43,7 +43,7 @@ char *getAliasValue(CustomShellData *data, char *aliasName)
 int i, aliasNameLength;
 
 if (aliasName == NULL || data->alias_list == NULL)
-return NULL;
+return (NULL);
 
 aliasNameLength = strLength(aliasName);
 
@@ -52,11 +52,11 @@ for (i = 0; data->alias_list[i]; i++)
 if (strCompare(aliasName, data->alias_list[i], aliasNameLength) &&
 data->alias_list[i][aliasNameLength] == '=')
 {
-return data->alias_list[i] + aliasNameLength + 1;
+return (data->alias_list[i] + aliasNameLength + 1);
 }
 }
 
-return NULL;
+return (NULL);
 }
 
 
@@ -73,35 +73,29 @@ char alias_name[250] = {'0'}, *alias_value = NULL;
 
 /* Validate the arguments */
 if (alias_string == NULL || program_data->alias_list == NULL)
-return 1;
-
+return (1);
 /* Iterate through the alias string to find the '=' character */
 for (in = 0; alias_string[in]; in++)
 {
 if (alias_string[in] != '=')
 {
-alias_name[in] = alias_string[in];
-}
+alias_name[in] = alias_string[in]; }
 else
 {
 /* Search if the value of the alias is another alias */
 alias_value = getAliasValue(program_data, alias_string + in + 1);
-break;
+break; }
 }
-}
-
 /* Iterate through the alias list and check for a match with the alias name */
 for (jx = 0; program_data->alias_list[jx]; jx++)
 {
-if (strCompare(alias_name,program_data->alias_list[jx], in) &&
+if (strCompare(alias_name, program_data->alias_list[jx], in) &&
 program_data->alias_list[jx][in] == '=')
 {
 /* If the alias already exists, free the previous one */
 free(program_data->alias_list[jx]);
-break;
+break; }
 }
-}
-
 /* Add the alias */
 if (alias_value)
 {
@@ -112,9 +106,5 @@ program_data->alias_list[jx] = strDuplicate(alias_string);
 else
 {
 /* If the alias does not exist, create a new one */
-program_data->alias_list[jx] = strDuplicate(alias_string);
-}
-
-return 0;
-}
-
+program_data->alias_list[jx] = strDuplicate(alias_string); }
+return (0); }

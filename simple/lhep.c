@@ -10,13 +10,13 @@ int strLength(char *str)
 int length = 0;
 
 if (str == NULL)
-return 0;
+return (0);
 
 while (str[length] != '\0')
 {
 length++;
 }
-return length;
+return (length);
 }
 
 /**
@@ -30,16 +30,16 @@ char *result;
 int length, i;
 
 if (str == NULL)
-return NULL;
+return (NULL);
 
 length = strLength(str) + 1;
 result = malloc(sizeof(char) * length);
 
 if (result == NULL)
 {
-errno = ENOMEM;
+errno = (ENOMEM);
 perror("Error");
-return NULL;
+return (NULL);
 }
 
 for (i = 0; i < length; i++)
@@ -47,7 +47,7 @@ for (i = 0; i < length; i++)
 result[i] = str[i];
 }
 
-return result;
+return (result);
 }
 
 /**
@@ -62,30 +62,30 @@ int strCompare(char *str1, char *str2, int count)
 int iterator;
 
 if (str1 == NULL && str2 == NULL)
-return 1;
+return (1);
 
 if (str1 == NULL || str2 == NULL)
-return 0;
+return (0);
 
-if (count == 0) // Infinite length
+if (count == 0) /* Infinite length */
 {
 if (strLength(str1) != strLength(str2))
-return 0;
+return (0);
 for (iterator = 0; str1[iterator]; iterator++)
 {
 if (str1[iterator] != str2[iterator])
-return 0;
+return (0);
 }
-return 1;
+return (1);
 }
 else /* If there is a number of characters to be compared*/
 {
 for (iterator = 0; iterator < count; iterator++)
 {
 if (str1[iterator] != str2[iterator])
-return 0;
+return (0);
 }
-return 1;
+return (1);
 }
 }
 
@@ -113,7 +113,7 @@ if (result == NULL)
 {
 errno = ENOMEM;
 perror("Error");
-return NULL;
+return (NULL);
 }
 
 
@@ -131,7 +131,7 @@ length1++;
 }
 
 result[length1] = '\0';
-return result;
+return (result);
 }
 
 /**

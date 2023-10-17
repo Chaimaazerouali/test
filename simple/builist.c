@@ -3,7 +3,7 @@
 /**
 * executeBuiltin - Executes the appropriate builtin command.
 * @data: Struct containing program data.
-* Return: Returns the return value of the executed function if there is a match,
+* Return: Returns the return value of the executed funct if there is a match,
 * otherwise returns -1.
 **/
 int executeBuiltin(CustomShellData *data)
