@@ -21,7 +21,7 @@ for (index = 0; data->tokens[1][index]; index++)
 /* Check if there's a '=' character in the argument */
 if (data->tokens[1][index] == '=')
 {
-/* Check if there's a variable with the same name and temporarily change its value */
+/* Check if there's a variable with the same temporarily change its value */
 var_copy = strDuplicate(getEnvironmentVariable(var_name, data));
 
 if (var_copy != NULL)
@@ -34,25 +34,18 @@ if (getEnvironmentVariable(var_name, data) == NULL)
 {
 /* Print the variable if it does not exist in the environment */
 printToStdout(data->tokens[1]);
-printToStdout("\n");
-}
+printToStdout("\n"); }
 else
 {
 /* Return the old value of the variable */
 setenvironmentVariable(var_name, var_copy, data);
-free(var_copy);
-}
-return (0);
-}
-var_name[index] = data->tokens[1][index];
-}
-
+free(var_copy); }
+return (0); }
+var_name[index] = data->tokens[1][index]; }
 errno = 2;
 perror(data->command_name);
-errno = 127;
-}
-return (0);
-}
+errno = 127; }
+return (0); }
 
 /**
 * setEnvironmentVariable - Set or update an environment variable.

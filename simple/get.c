@@ -1,9 +1,10 @@
 #include "sheel.h"
 
 /**
-* custom_getline - Read and process input commands from the file descriptor.
-* @ shelldata: A pointer to the shell data.
-* @return The length of the input line read, or -1 if there are no more cmds.
+* custom_getline - read one line from the prompt.
+* @shelldata: struct for the shelldata
+*
+* Return: reading counting bytes.
 */
 int custom_getline(CustomShellData *shelldata)
 {
@@ -48,7 +49,7 @@ return (strLength(shelldata->input_line));
 * @arycmd: An array of command strings.
 * @i: The current index in the array of command strings.
 * @aryops: An array of logical operators
-* @return The updated index for the next command.
+* Return: index of the last command in the array_commands.
 */
 int check_logical_operators(char *arycmd[], int i, char aryops[])
 {

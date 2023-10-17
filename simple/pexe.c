@@ -11,58 +11,46 @@
 */
 void expandVariables(CustomShellData *data)
 {
-int index1, index2;
-char inputCopy[BUFFER_SIZE] = {0}, expansion[BUFFER_SIZE] = {'\0'}, *temp;
-
+int x, y;
+char inCopy[BUFFER_SIZE] = {0}, expansion[BUFFER_SIZE] = {'\0'}, *temp;
 if (data->input_line == NULL)
 return;
-
-bufferAdd(inputCopy, data->input_line);
-
-for (index1 = 0; inputCopy[index1]; index1++)
+bufferAdd(inCopy, data->input_line);
+for (x = 0; inCopy[x]; x++)
 {
-if (inputCopy[index1] == '#')
+if (inCopy[x] == '#')
 {
-inputCopy[index1--] = '\0';
-}
-else if (inputCopy[index1] == '$' && inputCopy[index1 + 1] == '?')
+inCopy[x--] = '\0'; }
+else if (inCopy[x] == '$' && inCopy[x + 1] == '?')
 {
-inputCopy[index1] = '\0';
+inCopy[x] = '\0';
 convertLongToString(errno, expansion, 10);
-bufferAdd(inputCopy, expansion);
-bufferAdd(inputCopy, data->input_line + index1 + 2);
-}
-else if (inputCopy[index1] == '$' && inputCopy[index1 + 1] == '$')
+bufferAdd(inCopy, expansion);
+bufferAdd(inCopy, data->input_line + x + 2); }
+else if (inCopy[x] == '$' && inCopy[x + 1] == '$')
 {
-inputCopy[index1] = '\0';
+inCopy[x] = '\0';
 convertLongToString(getpid(), expansion, 10);
-bufferAdd(inputCopy, expansion);
-bufferAdd(inputCopy, data->input_line + index1 + 2);
-}
-else if (inputCopy[index1] == '$' && (inputCopy[index1 + 1] == ' ' || inputCopy[index1 + 1] == '\0'))
-{
+bufferAdd(inCopy, expansion);
+bufferAdd(inCopy, data->input_line + x + 2); }
+else if (inCopy[x] == '$' && (inCopy[x + 1] == ' ' || inCopy[x + 1] == '\0'))
 continue;
-}
-else if (inputCopy[index1] == '$')
+else if (inCopy[x] == '$')
 {
-for (index2 = 1; inputCopy[index1 + index2] && inputCopy[index1 + index2] != ' '; index2++)
+for (y = 1; inCopy[x + y] && inCopy[x + y] != ' '; y++)
 {
-expansion[index2 - 1] = inputCopy[index1 + index2];
-}
+expansion[y - 1] = inCopy[x + y]; }
 temp = getEnvironmentVariable(expansion, data);
-inputCopy[index1] = '\0';
+inCopy[x] = '\0';
 expansion[0] = '\0';
-bufferAdd(expansion, inputCopy + index1 + index2);
-temp ? bufferAdd(inputCopy, temp) : 1;
-bufferAdd(inputCopy, expansion);
+bufferAdd(expansion, inCopy + x + y);
+temp ? bufferAdd(inCopy, temp) : 1;
+bufferAdd(inCopy, expansion); }
 }
-}
-
-if (!strCompare(data->input_line, inputCopy, 0))
+if (!strCompare(data->input_line, inCopy, 0))
 {
 free(data->input_line);
-data->input_line = strDuplicate(inputCopy);
-}
+data->input_line = strDuplicate(inCopy); }
 }
 
 /**
@@ -76,7 +64,7 @@ data->input_line = strDuplicate(inputCopy);
 */
 void expandAliases(CustomShellData *data)
 {
-int index1, index2, wasExpanded = 0;
+int x1, x2, wasExpanded = 0;
 char inputCopy[BUFFER_SIZE] = {0}, expansion[BUFFER_SIZE] = {'\0'}, *temp;
 
 if (data->input_line == NULL)
@@ -84,20 +72,20 @@ return;
 
 bufferAdd(inputCopy, data->input_line);
 
-for (index1 = 0; inputCopy[index1]; index1++)
+for (x1 = 0; inputCopy[x1]; x1++)
 {
-for (index2 = 0; inputCopy[index1 + index2] && inputCopy[index1 + index2] != ' '; index2++)
+for (x2 = 0; inputCopy[x1 + x2] && inputCopy[x1 + x2] != ' '; x2++)
 {
-expansion[index2] = inputCopy[index1 + index2];
+expansion[x2] = inputCopy[x1 + x2];
 }
-expansion[index2] = '\0';
+expansion[x2] = '\0';
 temp = getAliasValue(data, expansion);
 
 if (temp)
 {
 expansion[0] = '\0';
-bufferAdd(expansion, inputCopy + index1 + index2);
-inputCopy[index1] = '\0';
+bufferAdd(expansion, inputCopy + x1 + x2);
+inputCopy[x1] = '\0';
 bufferAdd(inputCopy, temp);
 inputCopy[strlen(inputCopy)] = '\0';
 bufferAdd(inputCopy, expansion);

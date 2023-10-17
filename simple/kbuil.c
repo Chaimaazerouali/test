@@ -2,27 +2,27 @@
 
 /**
 * exitShell - Exit the program with a specified status code.
-* @dat: A structure containing program data.
+* @d: A structure containing program data.
 * Return: 0 if successful, or another number if specified in the arguments.
 */
-int exitShell(CustomShellData *dat)
+int exitShell(CustomShellData *d)
 {
-int idx;
+int x;
 
-if (dat->tokens[1] != NULL)
+if (d->tokens[1] != NULL)
 {
 /* If there is an argument for exit, check if it's a number */
-for (idx = 0; dat->tokens[1][idx]; idx++)
+for (x = 0; d->tokens[1][x]; x++)
 {
-if ((dat->tokens[1][idx] < '0' || dat->tokens[1][idx] > '9') && dat->tokens[1][idx] != '+')
+if ((d->tokens[1][x] < '0' || d->tokens[1][x] > '9') && d->tokens[1][x] != '+')
 {
-errno = EINVAL;
-return EINVAL;
+errno = 2;
+return (2);
 }
 }
-errno = parseInt(dat->tokens[1]);
+errno = parseInt(d->tokens[1]);
 }
-free_all_shell_data(dat);
+free_all_shell_data(d);
 exit(errno);
 }
 
@@ -60,7 +60,7 @@ else
 if (!homeDirectory)
 homeDirectory = getcwd(previous_dir, 128);
 
-return setWorkingDirectory(program_data, homeDirectory);
+return (setWorkingDirectory(program_data, homeDirectory));
 }
 return (0);
 }
@@ -82,8 +82,8 @@ if (!strCompare(previous_directory, new_directory, 0))
 error_code = chdir(new_directory);
 if (error_code == -1)
 {
-errno = ENOENT;
-return (ENOENT);
+errno = 2;
+return (3);
 }
 setenvironmentVariable("PWD", new_directory, program_data);
 }

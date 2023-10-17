@@ -69,7 +69,7 @@ shellData->env[i] = strConcat(shellData->env[i], value);
 
 if (isNewKey)
 {
-/* If the variable is new, it is created at the end of the current list and we need to put a NULL value in the next position */
+/* created at the end of we need to put a NULL in the next position */
 shellData->env[i + 1] = NULL;
 }
 

@@ -2,7 +2,7 @@
 
 /**
 * convertLongToString -  Converts a number to a string representation.
-* @number: The number to be converted to a string.
+* @num: The number to be converted to a string.
 * @result: The buffer to save the number as a string.
 * @base: The base for number conversion (e.g., 10 for decimal, 16 for hex).
 *
@@ -54,18 +54,19 @@ sign *= +1;
 str++;
 }
 
-while ('0'<= *str && *str<= '9' && *str != '\0')
+while ('0' <= *str && *str <= '9'
+&& *str != '\0')
 {
 num = (num * 10) + (*str - '0');
 str++;
 }
-return (num * sign);
+return (num *sign);
 }
 
 /**
-* countCharacterOccurrences -  Counts the occurrences of a specific char a string.
+* countCharacterOccurrences -  Counts the occurrences of a specific char a str.
 * @str: Pointer to the source string.
-* @charToCount: Pointer to a string containing characters to be counted (single character).
+* @charToCount: Pointer to a str containing char to be counted(single char).
 *
 * Return: The count of the specified character in the string.
 */
@@ -78,6 +79,6 @@ for (; str[idx]; idx++)
 if (str[idx] == charToCount[0])
 count++;
 }
-return count;
+return (count);
 }
 
